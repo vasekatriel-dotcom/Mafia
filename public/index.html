@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mafia Live</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header id="topbar">
+  <h1>🕵️ Mafia Live</h1>
+  <div id="phaseBadge" class="badge">Lobby</div>
+  <div id="timer" class="timer"></div>
+  <button id="audioToggle" class="iconbtn" title="Toggle sound">🔊</button>
+</header>
+
+<main id="app">
+
+  <!-- JOIN SCREEN -->
+  <section id="view-join" class="view">
+    <h2>Join the game</h2>
+    <p>Tap join to get your secret 1920s alias. Keep your code private!</p>
+    <button id="btnJoin" class="primary">Join Game</button>
+    <p class="hint">Rejoining on this device? <a href="#" id="btnRejoin">Use my saved code</a></p>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="view-lobby" class="view hidden">
+    <h2>Lobby <span id="lobbyCount"></span></h2>
+    <ul id="lobbyList" class="playerlist"></ul>
+    <button id="btnStart" class="primary hidden">Start Game (Host)</button>
+    <p id="lobbyHint" class="hint"></p>
+  </section>
+
+  <!-- PRIVATE ROLE CARD (shown once at game start, always accessible via tab) -->
+  <section id="view-role" class="view hidden">
+    <div class="card">
+      <h2>Your secret identity</h2>
+      <p>Name: <strong id="myName"></strong></p>
+      <p>Secret code: <code id="myToken"></code> <button id="btnCopyToken" class="small">copy</button></p>
+      <p>Role: <strong id="myRole"></strong></p>
+      <p id="roleFlavor" class="flavor"></p>
+    </div>
+  </section>
+
+  <!-- MAIN STAGE (day/night) -->
+  <section id="view-stage" class="view hidden">
+    <div id="factionCounts" class="factioncounts"></div>
+
+    <div id="dayPanel" class="panel hidden">
+      <h3>☀️ Day <span id="dayRound"></span> — Vote to eliminate</h3>
+      <ul id="voteList" class="playerlist"></ul>
+      <p class="hint">Votes are secret. Live counts only — no names attached.</p>
+    </div>
+
+    <div id="nightPanel" class="panel hidden">
+      <h3>🌙 Night <span id="nightRound"></span></h3>
+      <div id="mafiaPanel" class="subpanel hidden">
+        <h4>Mafia: choose a target</h4>
+        <ul id="mafiaTargetList" class="playerlist"></ul>
+        <h4>Mafia chat</h4>
+        <div id="mafiaChatLog" class="chatlog"></div>
+        <div class="chatinput">
+          <input id="mafiaChatInput" placeholder="Message the Family..." maxlength="500" />
+          <button id="btnMafiaSend">Send</button>
+        </div>
+      </div>
+      <div id="doctorPanel" class="subpanel hidden">
+        <h4>Doctor: choose who to save <span id="doctorExtraHint"></span></h4>
+        <ul id="doctorTargetList" class="playerlist"></ul>
+      </div>
+      <div id="detectivePanel" class="subpanel hidden">
+        <h4>Detective: investigate one player</h4>
+        <ul id="detectiveTargetList" class="playerlist"></ul>
+        <p id="detectiveResult" class="flavor"></p>
+      </div>
+      <div id="waitingPanel" class="subpanel">
+        <p class="hint">The town sleeps. Special roles are acting...</p>
+      </div>
+    </div>
+
+    <div id="narratorPanel" class="panel hidden">
+      <h3>🎙 Narrator controls</h3>
+      <div class="row">
+        <button id="btnForceEndDay">Force end Day</button>
+        <button id="btnForceEndNight">Force end Night</button>
+        <button id="btnForceEndGame" class="danger">End game</button>
+      </div>
+      <div class="row">
+        <input id="narratorMsgInput" placeholder="Narrate something to everyone..." maxlength="500" />
+        <button id="btnNarratorSend">Announce</button>
+      </div>
+    </div>
+
+    <div id="feedPanel" class="panel">
+      <h3>Town crier feed</h3>
+      <div id="publicFeed" class="chatlog"></div>
+    </div>
+  </section>
+
+  <!-- SPECTATOR / ELIMINATED AREA -->
+  <section id="view-spectator" class="view hidden">
+    <h2>You have been eliminated 💀</h2>
+    <div id="daggerPanel" class="subpanel hidden">
+      <h4>🗡 You hold a dagger</h4>
+      <p class="hint">Bestow it on a living player — their vote counts double next Day.</p>
+      <ul id="daggerTargetList" class="playerlist"></ul>
+    </div>
+    <div id="puzzlePanel" class="subpanel hidden">
+      <h4>Second chance: solve the puzzle!</h4>
+      <p id="puzzleIntro" class="hint"></p>
+      <button id="btnStartPuzzle" class="primary">Attempt puzzle</button>
+      <div id="puzzleQuizArea" class="hidden">
+        <div id="puzzleTimer" class="timer"></div>
+        <form id="puzzleForm"></form>
+        <button id="btnSubmitPuzzle" class="primary">Submit</button>
+      </div>
+      <p id="puzzleResult" class="flavor"></p>
+    </div>
+    <div class="panel">
+      <h3>Scoreboard</h3>
+      <ul id="scoreboardList" class="playerlist"></ul>
+    </div>
+    <div class="panel">
+      <h3>Spectator chat</h3>
+      <div id="spectatorChatLog" class="chatlog"></div>
+      <div class="chatinput">
+        <input id="spectatorChatInput" placeholder="Chat with the eliminated..." maxlength="500" />
+        <button id="btnSpectatorSend">Send</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Town crier feed</h3>
+      <div id="publicFeedSpectator" class="chatlog"></div>
+    </div>
+  </section>
+
+  <!-- GAME OVER -->
+  <section id="view-gameover" class="view hidden">
+    <h2 id="gameOverTitle"></h2>
+    <p id="gameOverBody"></p>
+  </section>
+
+</main>
+
+<nav id="tabbar" class="hidden">
+  <button data-tab="view-stage" class="tabbtn active">Game</button>
+  <button data-tab="view-role" class="tabbtn">My Role</button>
+</nav>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+:root {
+  --bg: #14151a;
+  --panel: #1e2028;
+  --accent: #c0392b;
+  --accent2: #2c7a4b;
+  --text: #eee;
+  --muted: #9aa0ab;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 70px; /* room for mobile tab bar */
+}
+
+#topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #0f1014;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid #2a2c34;
+}
+#topbar h1 { font-size: 1.1rem; margin: 0; flex: 1; }
+.badge {
+  background: var(--accent);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.timer { font-variant-numeric: tabular-nums; color: var(--muted); min-width: 40px; text-align: right; }
+.iconbtn { background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+
+main#app { max-width: 640px; margin: 0 auto; padding: 16px; }
+
+.view.hidden { display: none; }
+
+h2 { margin-top: 0; }
+
+button {
+  font: inherit;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #3a3d47;
+  background: #262832;
+  color: var(--text);
+  cursor: pointer;
+}
+button.primary { background: var(--accent2); border-color: var(--accent2); font-weight: 600; }
+button.danger { background: var(--accent); border-color: var(--accent); }
+button.small { padding: 4px 8px; font-size: 0.75rem; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+input {
+  font: inherit;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #3a3d47;
+  background: #12131a;
+  color: var(--text);
+  flex: 1;
+}
+
+.hint { color: var(--muted); font-size: 0.85rem; }
+.flavor { color: #f1c40f; font-size: 0.9rem; }
+
+.card, .panel, .subpanel {
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.playerlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.playerlist li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #262832;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+.playerlist li.dead { opacity: 0.4; text-decoration: line-through; }
+.playerlist li button { padding: 6px 10px; font-size: 0.8rem; }
+
+.factioncounts { display: flex; gap: 10px; margin-bottom: 12px; font-size: 0.9rem; color: var(--muted); }
+
+.row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+
+.chatlog {
+  height: 160px;
+  overflow-y: auto;
+  background: #12131a;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+.chatlog .msg { margin-bottom: 4px; }
+.chatlog .msg .from { color: var(--accent2); font-weight: 600; }
+
+.chatinput { display: flex; gap: 8px; }
+
+#puzzleForm { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+#puzzleForm .q { display: flex; align-items: center; gap: 8px; }
+#puzzleForm input { width: 80px; flex: none; }
+
+#tabbar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  background: #0f1014;
+  border-top: 1px solid #2a2c34;
+  z-index: 10;
+}
+#tabbar.hidden { display: none; }
+.tabbtn {
+  flex: 1;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 12px;
+}
+.tabbtn.active { color: var(--accent2); font-weight: 700; border-top: 2px solid var(--accent2); }
+
+@media (min-width: 700px) {
+  #tabbar { display: none !important; }
+  #view-role { max-width: 340px; margin-left: auto; }
+}
